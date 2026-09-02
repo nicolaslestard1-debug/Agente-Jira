@@ -1,0 +1,6 @@
+{
+  "name": "Agente Santander",
+  "description": "Automatic performance report generator for .Monks and Santander, transforming raw metrics into executive insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["AI Report Generation", "Metric Analysis", "Few-shot Learning", "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

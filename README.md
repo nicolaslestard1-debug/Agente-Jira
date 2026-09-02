@@ -1,47 +1,43 @@
-# Agente Jira
+# Agente Jira + Agente Santander
 
-Cursor workspace that connects an agent to **Jira Cloud** via the official Atlassian Rovo MCP. From chat you can search issues, comment, change status and dates, and log time — using your own Atlassian account and permissions.
+This workspace has two layers:
 
-No tokens or credentials are stored in this repository. Authentication happens in the browser.
+1. **Jira Cloud** via the official Atlassian Rovo MCP (Cursor chat).
+2. **Agente Santander** — the one-pager / KPI generator imported from `agente-santander-mex` (Vite + Express + Gemini).
 
-## What it can do
+No Jira tokens are stored here. Gemini needs `GEMINI_API_KEY` in `.env.local` for the web app.
 
-- Search and read issues (JQL or natural language)
-- Comment and update fields (assignee, due date, description)
-- Transition statuses (for example In Review or Completed)
-- Add worklogs in Jira (also visible in Tempo if your site uses it)
+## Jira MCP (Cursor)
 
-## Requirements
+Search issues, comment, change status, and log time with your Atlassian account.
 
-- [Cursor](https://cursor.com)
-- A **Jira Cloud** account (not Server / Data Center)
-- Permission to authorize the **Atlassian Rovo MCP** app on your site
+1. Open this repo as the Cursor workspace.
+2. In **Customize → MCP**, enable only this project's `atlassian` server. Turn off the marketplace Atlassian plugin if both are listed — two connections break OAuth.
+3. Authenticate, pick your Jira Cloud site, accept permissions.
 
-## Setup
+The server is declared in `.cursor/mcp.json` against `https://mcp.atlassian.com/v1/mcp/authv2` (Streamable HTTP).
 
-1. Clone this repository and open it as the Cursor workspace.
-2. In **Customize → MCP**, enable **only one** Atlassian connection: this project's `atlassian` server. Turn **off** the marketplace **Plugin atlassian** if it is also listed. Two connections to the same Atlassian MCP break OAuth: the browser login can succeed and Cursor still shows `SSE error: Non-200` (Local) or `Streamable HTTP error` (Cloud).
-3. Connect the workspace server. Complete Atlassian login, pick your site (`your-company.atlassian.net`), and accept the permissions.
-4. When the MCP is green, ask the agent for what you need, for example:
-   - *Find issues assigned to me that are in progress*
-   - *Comment on PROJ-123 that the dashboard is updated*
-   - *Move PROJ-123 to In Review*
+## Agente Santander (web app)
 
-## How it is wired
+Automatic performance report generator for Monks × Santander: raw metrics → executive one-pagers, scorecards, and charts.
 
-The workspace declares the Atlassian MCP in `.cursor/mcp.json` with a native HTTP URL against the official Rovo endpoint (`https://mcp.atlassian.com/v1/mcp/authv2`). Cursor talks to Jira without `mcp-remote` and without copying API tokens into the project.
+View in AI Studio: https://ai.studio/apps/4c13425f-7e9d-4f90-a4d0-76634fd77351
 
-That transport is Streamable HTTP. The old SSE endpoint (`/v1/sse`) is deprecated; Atlassian documents `SSE error: Non-200 status code` as a failure mode of that path. See the [HTTP+SSE deprecation notice](https://community.atlassian.com/forums/Atlassian-Remote-MCP-Server/HTTP-SSE-Deprecation-Notice/ba-p/3205484) and [Atlassian Cursor setup](https://support.atlassian.com/atlassian-ai-gateway/docs/set-up-ides/).
+### Run locally
 
-## If authentication succeeds but Cursor still shows an error
+Prerequisites: Node.js 18+
 
-1. Disable the extra Atlassian plugin so only this workspace server remains.
-2. In the Atlassian MCP modal, **Logout** on both Local and Cloud, then **Retry**.
-3. Command palette (`Cmd+Shift+P`) → **Clear all MCP tokens**, then authenticate again.
-4. A VPN or proxy may block `mcp.atlassian.com`.
-5. An Atlassian admin may need to approve **Atlassian Rovo MCP**.
-6. The site must be Jira Cloud.
+1. `npm install`
+2. Copy `.env.example` to `.env.local` and set `GEMINI_API_KEY`
+3. `npm run dev`
+
+### Scripts
+
+- `npm run dev` — Express + Vite via `tsx server.ts`
+- `npm run build` — Vite client + bundled server
+- `npm start` — `node dist/server.cjs`
+- `npm run lint` — `tsc --noEmit`
 
 ## License
 
-MIT. See [LICENSE](LICENSE). Access to Jira still depends on each user's Atlassian account.
+MIT. See [LICENSE](LICENSE). Jira access still depends on each user's Atlassian account. Gemini usage depends on your API key.

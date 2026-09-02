@@ -1,0 +1,439 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-santander-red: #EC0000;
+  --color-santander-red-dark: #B30000;
+  --color-santander-cielo: #DEEDF2;
+  --color-monks-dark: #121212;
+  --font-sans: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  --font-mono: "Arial Narrow", "Courier New", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-[#F8F8F8] text-[#111111] antialiased;
+    font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  html.dark,
+  html.dark body {
+    background-color: #0A0C10 !important;
+    color: #E2E8F0 !important;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL DARK MODE COMPLETE PALETTE (Santander & Media.Monks Dark Theme)
+   ========================================================================== */
+
+/* Main canvas, containers and wrappers */
+.dark,
+.dark body,
+.dark #root,
+.dark .min-h-screen,
+.dark [class*="bg-[#F8F8F8]"],
+.dark [class*="bg-[#F4F4F6]"],
+.dark [class*="bg-[#f4f4f6]"],
+.dark [class*="bg-[#F8F9FA]"],
+.dark [class*="bg-[#F9FAFB]"],
+.dark [class*="bg-[#FAFAFA]"] {
+  background-color: #0A0C10 !important;
+  color: #E2E8F0 !important;
+}
+
+/* Card surfaces & Modal containers */
+.dark .bg-white,
+.dark [class*="bg-white"],
+.dark [class*="bg-[#FFFFFF]"],
+.dark [class*="bg-[#ffffff]"] {
+  background-color: #131722 !important;
+  color: #E2E8F0 !important;
+}
+
+/* Secondary subtle backgrounds & drawers */
+.dark .bg-gray-50,
+.dark .bg-gray-50\/50,
+.dark .bg-gray-50\/80,
+.dark .bg-slate-50,
+.dark .bg-zinc-50 {
+  background-color: #0E121A !important;
+}
+
+.dark .bg-gray-100,
+.dark .bg-slate-100,
+.dark .bg-zinc-100 {
+  background-color: #1A1F2C !important;
+}
+
+.dark .bg-gray-200,
+.dark .bg-slate-200,
+.dark .bg-zinc-200 {
+  background-color: #242A3A !important;
+}
+
+/* Dark Corporate bar and deep backgrounds */
+.dark .bg-monks-dark {
+  background-color: #06070A !important;
+  color: #FFFFFF !important;
+}
+
+/* Text Hierarchy Overrides */
+.dark .text-monks-dark,
+.dark .text-[#111111],
+.dark .text-[#121212],
+.dark .text-gray-900,
+.dark .text-slate-900,
+.dark .text-zinc-900 {
+  color: #F8FAFC !important;
+}
+
+.dark .text-[#374151],
+.dark .text-gray-800,
+.dark .text-slate-800,
+.dark .text-gray-700,
+.dark .text-slate-700 {
+  color: #CBD5E1 !important;
+}
+
+.dark .text-[#4B5563],
+.dark .text-[#6B7280],
+.dark .text-gray-600,
+.dark .text-slate-600 {
+  color: #94A3B8 !important;
+}
+
+.dark .text-gray-500,
+.dark .text-slate-500,
+.dark .text-gray-400,
+.dark .text-slate-400 {
+  color: #7E8C9F !important;
+}
+
+/* Borders & Dividers */
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-200\/80,
+.dark .border-gray-300,
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark [class*="border-[#E5E7EB]"],
+.dark [class*="border-[#E2E8F0]"],
+.dark [class*="border-[#D1D5DB]"] {
+  border-color: #222838 !important;
+}
+
+.dark .border-gray-400,
+.dark .border-gray-500,
+.dark .border-slate-400 {
+  border-color: #333C4F !important;
+}
+
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #222838 !important;
+}
+
+/* Santander & Product Badges & Alerts */
+.dark .bg-santander-cielo {
+  background-color: rgba(14, 78, 99, 0.35) !important;
+  color: #38BDF8 !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+.dark .bg-red-50,
+.dark .bg-red-50\/70,
+.dark .bg-red-50\/80,
+.dark .bg-santander-red\/5,
+.dark .bg-santander-red\/10 {
+  background-color: rgba(236, 0, 0, 0.15) !important;
+}
+
+.dark .border-santander-red\/10,
+.dark .border-santander-red\/20,
+.dark .border-santander-red\/30,
+.dark .border-red-100,
+.dark .border-red-200 {
+  border-color: rgba(236, 0, 0, 0.35) !important;
+}
+
+.dark .text-santander-red {
+  color: #FF4444 !important;
+}
+
+.dark .bg-blue-50,
+.dark .bg-blue-50\/70,
+.dark .bg-blue-50\/80 {
+  background-color: rgba(37, 99, 235, 0.18) !important;
+  color: #60A5FA !important;
+}
+
+.dark .border-blue-100,
+.dark .border-blue-200 {
+  border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+.dark .text-blue-700,
+.dark .text-blue-800 {
+  color: #93C5FD !important;
+}
+
+.dark .bg-emerald-50,
+.dark .bg-emerald-50\/80,
+.dark .bg-emerald-50\/40 {
+  background-color: rgba(5, 150, 105, 0.18) !important;
+}
+
+.dark .border-emerald-200,
+.dark .border-emerald-300 {
+  border-color: rgba(5, 150, 105, 0.35) !important;
+}
+
+.dark .text-emerald-700,
+.dark .text-emerald-800 {
+  color: #6EE7B7 !important;
+}
+
+.dark .bg-amber-50,
+.dark .bg-amber-50\/80,
+.dark .bg-amber-50\/40 {
+  background-color: rgba(217, 119, 6, 0.18) !important;
+}
+
+.dark .border-amber-200,
+.dark .border-amber-300 {
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+
+.dark .text-amber-700,
+.dark .text-amber-800 {
+  color: #FCD34D !important;
+}
+
+.dark .bg-purple-50,
+.dark .bg-purple-50\/70 {
+  background-color: rgba(147, 51, 234, 0.18) !important;
+  color: #C084FC !important;
+}
+
+.dark .border-purple-200 {
+  border-color: rgba(168, 85, 247, 0.35) !important;
+}
+
+/* Gradients in Dark Mode - Neutralize all white/light gradients */
+.dark .from-white,
+.dark .from-white\/90,
+.dark .from-white\/80,
+.dark [class*="from-white"] {
+  --tw-gradient-from: #131722 !important;
+  --tw-gradient-to: #0E121A !important;
+  --tw-gradient-stops: #131722, #0E121A !important;
+}
+
+.dark .to-gray-50\/50,
+.dark .to-gray-50,
+.dark .to-gray-100,
+.dark [class*="to-gray-50"] {
+  --tw-gradient-to: #0E121A !important;
+}
+
+.dark .bg-gradient-to-b.from-white {
+  background-image: none !important;
+  background-color: #131722 !important;
+}
+
+/* Interactive Pills & Buttons */
+.santander-pill {
+  @apply rounded-full border border-[#EC0000] text-[#EC0000] px-3 py-1 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 transition-all;
+}
+
+.dark .santander-pill {
+  @apply border-[#FF4444] text-[#FF5555] bg-[#FF4444]/10 hover:bg-[#EC0000] hover:text-white;
+}
+
+.santander-pill-active {
+  @apply rounded-full bg-[#EC0000] text-white px-3 py-1 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm transition-all;
+}
+
+.dark .santander-pill-active {
+  @apply bg-[#EC0000] text-white shadow-md shadow-red-950/60;
+}
+
+.santander-escalon {
+  border-left: 4px solid #EC0000;
+}
+
+.santander-escalon-top {
+  border-top: 3px solid #EC0000;
+}
+
+.executive-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.dark .executive-shadow {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+}
+
+/* Inputs, Selects, Textareas & Search Bars */
+.dark input[type="text"],
+.dark input[type="search"],
+.dark input[type="number"],
+.dark input[type="password"],
+.dark textarea,
+.dark select {
+  background-color: #0E121A !important;
+  color: #F1F5F9 !important;
+  border-color: #262D3E !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: #EC0000 !important;
+  box-shadow: 0 0 0 2px rgba(236, 0, 0, 0.3) !important;
+}
+
+/* Tables & Metric Grids */
+.dark table {
+  border-color: #222838 !important;
+}
+
+.dark th {
+  background-color: #10141E !important;
+  color: #E2E8F0 !important;
+  border-color: #222838 !important;
+}
+
+.dark td {
+  border-color: #222838 !important;
+}
+
+.dark tbody tr {
+  background-color: #131722;
+}
+
+.dark tbody tr:nth-child(even) {
+  background-color: #0F131C !important;
+}
+
+.dark tbody tr:hover {
+  background-color: #1A202E !important;
+}
+
+/* Modals & Popups Backdrop */
+.dark .fixed.inset-0.bg-black\/50,
+.dark .fixed.inset-0.bg-black\/60,
+.dark .fixed.inset-0.bg-gray-900\/50 {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(6px);
+}
+
+/* Header & Sticky Bars */
+.dark header.bg-white {
+  background-color: #10131B !important;
+  border-bottom-color: #EC0000 !important;
+}
+
+/* Markdown Rendering in Dark & Light */
+.markdown-body {
+  @apply space-y-5 text-sm leading-relaxed text-gray-800;
+  font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.markdown-body h1, .markdown-body h2 {
+  @apply font-black text-base text-[#111111] uppercase tracking-wide border-b-2 border-[#EC0000]/20 pb-2 mt-6 first:mt-2 flex items-center gap-2;
+}
+
+.markdown-body h3 {
+  @apply font-bold text-sm text-[#EC0000] uppercase tracking-wider mt-4 mb-2;
+}
+
+.markdown-body p {
+  @apply mb-3.5 text-gray-800 leading-relaxed;
+}
+
+.markdown-body ul {
+  @apply list-disc pl-5 space-y-1.5 my-3;
+}
+
+.markdown-body li {
+  @apply text-gray-800;
+}
+
+.markdown-body strong {
+  @apply text-[#EC0000] font-extrabold bg-red-50/70 px-1 rounded border border-red-100/50;
+}
+
+.dark .markdown-body {
+  color: #D1D5DB;
+}
+
+.dark .markdown-body h1, 
+.dark .markdown-body h2 {
+  color: #FFFFFF !important;
+  border-color: rgba(236, 0, 0, 0.45);
+}
+
+.dark .markdown-body h3 {
+  color: #FF5555 !important;
+}
+
+.dark .markdown-body p {
+  color: #D1D5DB !important;
+}
+
+.dark .markdown-body li {
+  color: #D1D5DB !important;
+}
+
+.dark .markdown-body strong {
+  color: #FF6B6B !important;
+  background-color: rgba(236, 0, 0, 0.22) !important;
+  border-color: rgba(236, 0, 0, 0.4) !important;
+}
+
+/* Tooltip & Visuals in Dark Mode */
+.dark .recharts-default-tooltip {
+  background-color: #131722 !important;
+  border-color: #282F3E !important;
+  color: #F3F4F6 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important;
+}
+
+.dark .recharts-cartesian-grid line {
+  stroke: #222838 !important;
+}
+
+.dark .recharts-text {
+  fill: #94A3B8 !important;
+}
+
+/* Custom Scrollbars in Dark Mode */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0A0C10;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #262D3E;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3B455E;
+}
+
+
+
