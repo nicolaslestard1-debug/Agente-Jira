@@ -120,7 +120,8 @@ class JiraClient:
     def search_issues(self, jql, max_results=10):
         """Busca issues usando JQL."""
         encoded_jql = urllib.parse.quote(jql)
-        res = self._request("GET", f"/rest/api/3/search?jql={encoded_jql}&maxResults={max_results}&fields=summary,status,assignee,issuetype,priority")
+        endpoint = f"/rest/api/3/search/jql?jql={encoded_jql}&maxResults={max_results}&fields=summary,status,assignee,issuetype,priority"
+        res = self._request("GET", endpoint)
         issues = []
         for issue in res.get("issues", []):
             f = issue.get("fields", {})
@@ -132,7 +133,7 @@ class JiraClient:
                 "type": f.get("issuetype", {}).get("name")
             })
         return {
-            "total": res.get("total", 0),
+            "total": len(issues),
             "issues": issues
         }
 
