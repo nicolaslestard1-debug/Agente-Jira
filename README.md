@@ -1,47 +1,118 @@
 # Agente Jira
 
-Cursor workspace that connects an agent to **Jira Cloud** via the official Atlassian Rovo MCP. From chat you can search issues, comment, change status and dates, and log time — using your own Atlassian account and permissions.
+Workspace and toolkit that connects AI agents (like **Cursor** and **Google Antigravity**) to **Jira Cloud**. From the chat or command line, you can search issues, comment, change status and dates, and log work hours (worklogs) — using your own Atlassian account and permissions.
 
-No tokens or credentials are stored in this repository. Authentication happens in the browser.
+---
 
 ## What it can do
 
-- Search and read issues (JQL or natural language)
-- Comment and update fields (assignee, due date, description)
-- Transition statuses (for example In Review or Completed)
-- Add worklogs in Jira (also visible in Tempo if your site uses it)
+- **Search & read issues**: JQL or natural language
+- **Comment & update fields**: Assignee, description, dates
+- **Status transitions**: Move issues (e.g. *In Review*, *Done*)
+- **Worklogs**: Log time worked directly on tickets (compatible with Tempo)
 
-## Requirements
+---
 
-- [Cursor](https://cursor.com)
-- A **Jira Cloud** account (not Server / Data Center)
-- Permission to authorize the **Atlassian Rovo MCP** app on your site
+## Connection Options
 
-## Setup
+You can connect your agent to Jira Cloud using either of the following two options:
 
-1. Clone this repository and open it as the Cursor workspace.
-2. In **Customize → MCP**, enable **only one** Atlassian connection: this project's `atlassian` server. Turn **off** the marketplace **Plugin atlassian** if it is also listed. Two connections to the same Atlassian MCP break OAuth: the browser login can succeed and Cursor still shows `SSE error: Non-200` (Local) or `Streamable HTTP error` (Cloud).
-3. Connect the workspace server. Complete Atlassian login, pick your site (`your-company.atlassian.net`), and accept the permissions.
-4. When the MCP is green, ask the agent for what you need, for example:
+### Option 1: Cursor Workspace (via Official Atlassian Rovo MCP)
+
+Ideal if you are working inside [Cursor](https://cursor.com) and prefer browser OAuth login without handling API tokens.
+
+#### Setup:
+1. Open this repository as your Cursor workspace.
+2. In **Customize → MCP**, enable **only one** Atlassian connection: this project's `atlassian` server (`.cursor/mcp.json`). Turn **off** any marketplace Atlassian plugin to prevent OAuth conflicts.
+3. Connect the workspace server. Complete the Atlassian browser login, select your site (`your-company.atlassian.net`), and grant permissions.
+4. When the MCP status turns green, you can ask Cursor in chat:
    - *Find issues assigned to me that are in progress*
-   - *Comment on PROJ-123 that the dashboard is updated*
+   - *Log 2 hours on PROJ-123 with comment: updated dashboard*
    - *Move PROJ-123 to In Review*
 
-## How it is wired
+#### How it is wired:
+Declared in `.cursor/mcp.json` using the native Streamable HTTP endpoint:
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "url": "https://mcp.atlassian.com/v1/mcp/authv2"
+    }
+  }
+}
+```
 
-The workspace declares the Atlassian MCP in `.cursor/mcp.json` with a native HTTP URL against the official Rovo endpoint (`https://mcp.atlassian.com/v1/mcp/authv2`). Cursor talks to Jira without `mcp-remote` and without copying API tokens into the project.
+---
 
-That transport is Streamable HTTP. The old SSE endpoint (`/v1/sse`) is deprecated; Atlassian documents `SSE error: Non-200 status code` as a failure mode of that path. See the [HTTP+SSE deprecation notice](https://community.atlassian.com/forums/Atlassian-Remote-MCP-Server/HTTP-SSE-Deprecation-Notice/ba-p/3205484) and [Atlassian Cursor setup](https://support.atlassian.com/atlassian-ai-gateway/docs/set-up-ides/).
+### Option 2: Antigravity / Direct CLI Integration (via Atlassian API Token)
 
-## If authentication succeeds but Cursor still shows an error
+Ideal if you are working in **Antigravity**, terminal, or any environment where you want direct agent interaction using an API Token and Python (zero external dependencies).
 
-1. Disable the extra Atlassian plugin so only this workspace server remains.
-2. In the Atlassian MCP modal, **Logout** on both Local and Cloud, then **Retry**.
-3. Command palette (`Cmd+Shift+P`) → **Clear all MCP tokens**, then authenticate again.
-4. A VPN or proxy may block `mcp.atlassian.com`.
-5. An Atlassian admin may need to approve **Atlassian Rovo MCP**.
-6. The site must be Jira Cloud.
+#### Setup:
+1. Generate an Atlassian API Token:
+   - Visit [id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens).
+   - Click **Create API token** and copy the value.
+2. Create your `.env` file from the provided `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+3. Edit `.env` with your Jira details:
+   ```env
+   JIRA_URL="https://your-company.atlassian.net"
+   JIRA_EMAIL="your-email@company.com"
+   JIRA_API_TOKEN="your-api-token"
+   ```
+   *(Note: `.env` is ignored by `.gitignore` so your credentials are never committed).*
+
+4. **Test the connection**:
+   ```bash
+   python3 jira_cli.py test
+   ```
+
+#### Usage with Antigravity:
+The repository includes agent rules in `.agents/rules/jira.md`. Once configured, you can simply ask the Antigravity agent in natural language:
+- *"Log 1h 30m on ABC-123 with comment: Code review and tests"*
+- *"Show me details for ABC-123"*
+- *"Search for my open issues in project ABC"*
+
+#### CLI Commands:
+You can also run commands manually:
+```bash
+# Test connection
+python3 jira_cli.py test
+
+# Get issue details
+python3 jira_cli.py get PROJ-123
+
+# Search issues with JQL
+python3 jira_cli.py search "assignee = currentUser() AND status = 'In Progress'"
+
+# Log work (hours)
+python3 jira_cli.py worklog PROJ-123 2h "Bug investigation and fix"
+
+# Add a comment
+python3 jira_cli.py comment PROJ-123 "PR ready for review"
+
+# List available status transitions
+python3 jira_cli.py transitions PROJ-123
+
+# Change issue status
+python3 jira_cli.py transition PROJ-123 "In Review"
+```
+
+---
+
+## Troubleshooting (Option 1 - Cursor MCP)
+
+If browser login succeeds but Cursor shows an SSE or Streamable HTTP error:
+1. Disable any secondary Atlassian plugins so only this workspace server remains active.
+2. In the Atlassian MCP modal, click **Logout** on both Local and Cloud, then **Retry**.
+3. In Command Palette (`Cmd+Shift+P`), run **Clear all MCP tokens**, then authenticate again.
+4. Ensure your VPN or corporate proxy is not blocking `mcp.atlassian.com`.
+5. Verify that an Atlassian site administrator has approved **Atlassian Rovo MCP**.
+
+---
 
 ## License
 
-MIT. See [LICENSE](LICENSE). Access to Jira still depends on each user's Atlassian account.
+MIT. See [LICENSE](LICENSE). Access to Jira depends on each user's Atlassian account permissions.
